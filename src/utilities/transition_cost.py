@@ -32,7 +32,7 @@ def harmonic_distance(key1, key2):
 
     return wheel_distance + mode_penalty
 
-def tempo_distance(bpm1, bpm2, max_diff, normalize: bool = True):
+def tempo_distance(bpm1, bpm2, max_diff = 30.0, normalize = True):
     """
     Calculate tempo distance between two songs based on tempo in BPM
     """
@@ -51,14 +51,11 @@ def tempo_distance(bpm1, bpm2, max_diff, normalize: bool = True):
     else:
         return min_diff
     
-def transition_cost(w_h, w_t, song1, song2):
+def transition_cost(song1_k, song1_bpm, song2_k, song2_bpm, w_h = 0.5, w_t = 0.5):
     """
     Calculate total cost based on results from two above functions
     
-    Assuming:
-    song1, song2 : dict
-        Dictionary containing key and bpm as keys
     """
-    harm_cost = harmonic_distance(song1["key"], song2["key"])
-    tempo_cost = tempo_distance(song2["bpm"], song2["bpm"])
+    harm_cost = harmonic_distance(song1_k, song2_k)
+    tempo_cost = tempo_distance(song1_bpm, song2_bpm, normalize=False) # NOT normalized
     return w_h * harm_cost + w_t * tempo_cost
