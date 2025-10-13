@@ -6,7 +6,7 @@ def predict_key(audio_path):
     hop_size = 2205
     chroma = librosa.feature.chroma_stft(y=audio, sr=fs, tuning=0, norm=2,
                                             hop_length=hop_size, n_fft=n_fft)
-
+    
     def norm(v):
         return (v - v.mean()) / (v.std() + 1e-12)
 
@@ -56,5 +56,4 @@ def predict_key(audio_path):
 
     camelot_key = camelot_map.get(key_mode, "Unknown")
    
-
     return camelot_key
