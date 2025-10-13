@@ -118,7 +118,7 @@ class BPM_extractor():
         max_bpm = bpm_axis[max_idx]
         print(f"Estimated global tempo: {np.mean(max_bpm):.1f} BPM")
 
-        return tempogram, bpm_axis, time_axis
+        return tempogram, bpm_axis, time_axis, np.mean(max_bpm)
 
 
     def _autoCorrelation_tempogram(self, novelity):
@@ -153,7 +153,7 @@ class BPM_extractor():
         bpm_est = bpm_axis[np.argmax(avg_strength)]
         print(f"Estimated global tempo: {bpm_est:.1f} BPM")
         
-        return tempogram, bpm_axis, time_axis
+        return tempogram, bpm_axis, time_axis, bpm_est
 
 
 
@@ -186,11 +186,17 @@ class BPM_extractor():
         plt.show()
 
 
-    def get_BPM(self, sound): 
+    def get_BPM(self, sound, plot = False): 
         novelty = self.novelty_f(sound)
+        self.plot_novelty(sound)
         #self.plot_novelty(sound)
-        tempogram, bpm_axis, time_axis = self.tempogram(novelty)
-        self.plot_tempogram(tempogram, bpm_axis, time_axis, overlay_max=True)
+        
+        tempogram, bpm_axis, time_axis, bpm_est = self.tempogram(novelty)
+        if plot: 
+            self.plot_novelty(sound)
+            self.plot_tempogram(tempogram, bpm_axis, time_axis, overlay_max=True)
+        
+        return bpm_est
         
 
     #def _phase_novelty(self, novelity):  #TODO maybe try this novelity func aswell
