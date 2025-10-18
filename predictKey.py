@@ -1,3 +1,7 @@
+import numpy as np 
+import librosa
+
+
 def predict_key(audio_path):
     audio, fs = librosa.load(audio_path)
 
@@ -36,7 +40,7 @@ def predict_key(audio_path):
 
     names = ['C','C#','D','Eb','E','F','F#','G','Ab','A','Bb','B']
     key_mode= (names[best_key] +" "+ best_mode)
-  
+    
 
     #map from musical key to Camelot notation
     camelot_map = {

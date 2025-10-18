@@ -12,8 +12,8 @@ class BPM_extractor():
         self.nfft = 8192
         self.novelty_window = (novelty_w, novelty_hop) # the window used in novelty calc IN SECONDS (window size, hop size)
         self.tempo_window = (tempo_w, tempo_hop)
-        self.bpm_max = 180
-        self.bpm_min = 100
+        self.bpm_max = 200
+        self.bpm_min = 80
 
         if novelty == "spectral": 
             self.novelty_f = self._spectral_novelty
@@ -116,9 +116,18 @@ class BPM_extractor():
         # tempogram /= (tempogram.max(axis=1, keepdims=True) + 1e-10)
         max_idx = np.argmax(tempogram, axis=1)
         max_bpm = bpm_axis[max_idx]
-        print(f"Estimated global tempo: {np.mean(max_bpm):.1f} BPM")
 
-        return tempogram, bpm_axis, time_axis, np.mean(max_bpm)
+        median_bpm = np.median(max_bpm)
+        mean_bpm = np.mean(max_bpm)
+        # keep only BPMs close to the median (±4 BPM tolerance)
+        tolerance = int(mean_bpm * 0.2)  
+        mask = np.abs(max_bpm - median_bpm) <= tolerance
+
+        # mean of stable region
+        mean_bpm = np.mean(max_bpm[mask]) if np.any(mask) else median_bpm
+
+
+        return tempogram, bpm_axis, time_axis, mean_bpm
 
 
     def _autoCorrelation_tempogram(self, novelity):
@@ -151,7 +160,7 @@ class BPM_extractor():
 
         avg_strength = tempogram.mean(axis=0)
         bpm_est = bpm_axis[np.argmax(avg_strength)]
-        print(f"Estimated global tempo: {bpm_est:.1f} BPM")
+        #print(f"Estimated global tempo: {bpm_est:.1f} BPM")
         
         return tempogram, bpm_axis, time_axis, bpm_est
 
@@ -187,10 +196,7 @@ class BPM_extractor():
 
 
     def get_BPM(self, sound, plot = False): 
-        novelty = self.novelty_f(sound)
-        self.plot_novelty(sound)
-        #self.plot_novelty(sound)
-        
+        novelty = self.novelty_f(sound)    
         tempogram, bpm_axis, time_axis, bpm_est = self.tempogram(novelty)
         if plot: 
             self.plot_novelty(sound)
