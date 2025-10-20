@@ -3,21 +3,21 @@
 import numpy as np
 from python_tsp.exact import solve_tsp_dynamic_programming as tsp_dynamic
 from python_tsp.heuristics import solve_tsp_simulated_annealing as tsp_annealing
-from python_tsp.heuristics import solve_tsp_local_search as tsp_annealing
+from python_tsp.heuristics import solve_tsp_local_search as tsp_local
+import pandas as pd
+from src.model.cost_matrix import CostMatrix
 
+def create_optimized_path(filepath, type='a'):
 
-def tsp_python(matrix, heuristic: bool = True):
-    """ 
-    Calculate lowest costing route
-
-    Input: Cost matrix, heuristic: If not, use Held-Karp method (slower) otherwise heuristic
-    Output: lowest cost route ==> order of indexes corresponding to songs in playlist
-    """
-    if not heuristic:
-        permutation, cost = tsp_dynamic(matrix)
-        return permutation, cost
+    solvers = {'d': tsp_dynamic, 'l': tsp_local, 'a': tsp_annealing}
     
-    permutation, cost = tsp_annealing(matrix)
-    return permutation, cost
+    df = pd.read_csv(filepath)
+    df.columns = [c.strip().lower() for c in df.columns] # Remove space, make lowercase
 
-# Other methods...?
+    cost_matrix = CostMatrix(df)
+    cost_matrix.compute_matrix() # Compute transition costs for all songs in the dataframe
+    
+    solver = solvers.get(type, tsp_annealing) # Get desired solver, default to annealing if input invalid
+
+    permutation, total_cost = solver(cost_matrix.matrix)
+    return permutation, total_cost 
