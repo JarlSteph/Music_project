@@ -1,9 +1,11 @@
+import math
+
 def harmonic_distance(key1, key2):
     """
     Calculate the harmonic distance between two songs based on Camelot notation.
 
     Improvements: 
-    Weight the penalties differently based on modality and wheel distance
+    Weight the penalties differently based on modality and wheel distance.
     (find ideal non-linearity)
 
     """
@@ -51,11 +53,41 @@ def tempo_distance(bpm1, bpm2, max_diff = 30.0, normalize = True):
     else:
         return min_diff
     
-def transition_cost(song1_k, song1_bpm, song2_k, song2_bpm, w_h = 0.5, w_t = 0.5):
+
+#-------- UPDATED FUNCTIONS --------
+
+def bpm_diff(bpm1, bpm2):
+    t, p = float(bpm1), float(bpm2)
+    if t <= 0 or p <= 0:
+        return 0.0
+    d = abs(math.log2(p / t)) % 1.0   # wrap by octaves
+    d = min(d, 1.0 - d)               # fold to [0, 0.5]
+    return 1- (1.0 - 2.0 * d)              # score in [0,1]; 1 = perfect/octave
+
+def key_diff(key1, key2):  
+    key1 = key1.strip(); key2 = key2.strip()
+    nr_t, let_t = int(key1[:-1]), key1[-1]
+    nr_p, let_p = int(key2[:-1]), key2[-1]
+    
+    nr_diff = abs(nr_t - nr_p)
+    nr_diff = min(nr_diff, 12 - nr_diff)  # circular distance
+    
+    let_diff = 0 if let_t == let_p else 1
+    return (nr_diff + let_diff) / 7
+
+
+def transition_cost(song1, song2, w_h = 0.5, w_t = 0.5):
     """
     Calculate total cost based on results from two above functions
+
+    Standard weights are 50/50
+
+    Improvements:
+    Think about how to weight the two. Tempo cost can easily dominate given 
     
     """
-    harm_cost = harmonic_distance(song1_k, song2_k)
-    tempo_cost = tempo_distance(song1_bpm, song2_bpm, normalize=False) # NOT normalized
+    harm_cost = key_diff(song1["Key"], song2["Key"])
+    tempo_cost = bpm_diff(song1["BPM"], song2["BPM"]) 
     return w_h * harm_cost + w_t * tempo_cost
+
+
