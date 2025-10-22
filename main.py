@@ -155,12 +155,10 @@ def main(path = None):
     print("Extracting features")
     p_name, bpms, keys=loop(path)
     df["Name"] = p_name ; df["BPM"] = bpms ; df["Key"] = keys
-
     print("Finding the optimal order")
     cost_matrix = CostMatrix(df)
     cost_matrix.compute_matrix()
     best_cost = float("inf")
-
     if len(df) < 3:
         print("Not enough songs to solve TSP.")
         return
@@ -172,7 +170,7 @@ def main(path = None):
             best_perm, best_cost = perm, cost
     ordered_df = df.iloc[best_perm].reset_index(drop=True)  # full song info, ordered
     #plot_ordered_songs(df, cost_matrix, best_perm, best_cost, plot=False) # plot = False just to not show it 
-    print(ordered_df)
+    #print(ordered_df)
     plot_bpm_key_variation(ordered_df)
 
 
