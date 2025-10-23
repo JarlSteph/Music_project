@@ -1,17 +1,17 @@
-song, BPM, key, ix
-Chasing Bliss.mp3, 128, 8A, 4
-Don’t Wanna Wait (feat. Laura Davie).mp3, 126, 7A, 11
-Don't You Know.mp3, 126, 8A, 15
-Fun.mp3, 126, 4A, 7
-Heartbreak Anthem (with David Guetta & Little Mix) - Misha K & Galantis Gold Rush VIP.mp3, 128, 5A, 10
-Hero.mp3, 125, 11B, 1
-Night @ The Black - Ki Creighton Remix.mp3, 125, 1A, 16
-Pearl River - Icarus Remix.mp3, 126, 1A, 12
-Pull Me Closer (Armin van Buuren Remix).mp3, 124, 10A, 3
-Pum Pum - Antoine Delvig Remix.mp3, 130, 2A, 9
-Reflect.mp3, 126, 6A, 8
-Secrets.mp3, 124, 3A, 13
-She's The One.mp3, 122, 1A, 14
-Superman - Stadiumx Remix.mp3, 127, 6A, 5
-Technology.mp3, 125, 7B, 6
-Ways To Heaven.mp3, 123, 12A, 2
+name,bpm,key,ix
+Chasing Bliss,128,8A,4
+Don’t Wanna Wait (feat. Laura Davie),126,7A,11
+Don't You Know,126,8A,15
+Fun,126,4A,7
+Heartbreak Anthem (with David Guetta & Little Mix) - Misha K & Galantis Gold Rush VIP,128,5A,10
+Hero,125,11B,1
+Night @ The Black - Ki Creighton Remix,125,1A,16
+Pearl River - Icarus Remix,126,1A,12
+Pull Me Closer (Armin van Buuren Remix),124,10A,3
+Pum Pum - Antoine Delvig Remix,130,2A,9
+Reflect,126,6A,8
+Secrets,124,3A,13
+She's The One,122,1A,14
+Superman - Stadiumx Remix,127,6A,5
+Technology,125,7B,6
+Ways To Heaven,123,12A,2

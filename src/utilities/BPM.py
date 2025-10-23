@@ -5,14 +5,21 @@ import numpy as np
 class BPM_extractor(): 
 
     def __init__(self, sr, novelty = "spectral", tempogram = "fourier", 
-                 novelty_w: float = 1.0, novelty_hop: float = 0.1,
-                 tempo_w: float = 20.0, tempo_hop: float = 1.0):
+                 novelty_w: float = 1.0, 
+                 novelty_hop: float = 0.1,
+                 tempo_w: float = 20.0, 
+                 tempo_hop: float = 1.0,
+                 interval_min = None,
+                 interval_max = None
+                 ):
         self.sr = sr
         self.nfft = 8192
         self.novelty_window = (novelty_w, novelty_hop) # the window used in novelty calc IN SECONDS (window size, hop size)
         self.tempo_window = (tempo_w, tempo_hop)
         self.bpm_max = 320
-        self.bpm_min = 80
+        self.bpm_min = 60
+        self.interval_min = interval_min
+        self.interval_max = interval_max
 
         if novelty == "spectral": 
             self.novelty_f = self._spectral_novelty
@@ -86,6 +93,16 @@ class BPM_extractor():
         plt.ylabel("Novelty")
         plt.tight_layout()
         plt.show()
+    
+    def _adjust_bpm_to_interval(self, bpm_est): # New addition, adjusts for half/double time error in estimations
+        if not (self.interval_min and self.interval_max):
+            return bpm_est
+        if self.interval_min <= bpm_est/2 <= self.interval_max:
+            return bpm_est/2
+        if self.interval_min <= bpm_est*2 <= self.interval_max:
+            return bpm_est*2
+        return bpm_est
+
 
     def _fourier_tempogram(self, novelty: np.ndarray):
         novelty_fs = 1.0 / self.novelty_window[1]  # novelty frames per second
@@ -125,6 +142,7 @@ class BPM_extractor():
         # mean of stable region
         mean_bpm = np.mean(max_bpm[mask]) if np.any(mask) else median_bpm
 
+        mean_bpm = self._adjust_bpm_to_interval(mean_bpm)
 
         return tempogram, bpm_axis, time_axis, mean_bpm
 
@@ -160,6 +178,8 @@ class BPM_extractor():
         avg_strength = tempogram.mean(axis=0)
         bpm_est = bpm_axis[np.argmax(avg_strength)]
         #print(f"Estimated global tempo: {bpm_est:.1f} BPM")
+        
+        bpm_est = self._adjust_bpm_to_interval(bpm_est)
         
         return tempogram, bpm_axis, time_axis, bpm_est
 

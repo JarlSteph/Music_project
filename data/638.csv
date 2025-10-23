@@ -1,15 +1,15 @@
-song, BPM, key, ix
-Aracaju.mp3, 125, 11A, 2
-BLACK MAGIC.mp3, 128, 7A, 9
-Cameo - David Guetta Remix.mp3, 126, 10A, 14 		
-Carousel.mp3, 128, 6A, 6		
-Counter Punch.mp3, 126, 6A, 13		
-Crank.mp3, 126, 11A, 4		
-Dance With Me.mp3, 126, 6A, 3		
-Fuzzey - Da Fresh Remix.mp3, 124, 9A, 7		
-Haunted.mp3, 127, 1B, 10		
-I'm Good (Blue).mp3, 128, 6A, 8		
-Lick It - Thomas' Midnight Cut.mp3, 130, 5B, 5		
-Living Without You.mp3, 125, 10B, 1		
-Make Love Not War - Dombresky Remix.mp3, 126, 2A, 12		
-Outer Love - Extended Mix.mp3, 126, 1A, 11		
+name,bpm,key,ix
+Aracaju,125,11A,2
+BLACK MAGIC,128,7A,9
+Cameo - David Guetta Remix,126,10A,14
+Carousel,128,6A,6
+Counter Punch,126,6A,13
+Crank,126,11A,4
+Dance With Me,126,6A,3
+Fuzzey - Da Fresh Remix,124,9A,7
+Haunted,127,1B,10
+I'm Good (Blue),128,6A,8
+Lick It - Thomas' Midnight Cut,130,5B,5
+Living Without You,125,10B,1
+Make Love Not War - Dombresky Remix,126,2A,12
+Outer Love - Extended Mix,126,1A,11
