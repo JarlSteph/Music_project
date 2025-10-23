@@ -86,8 +86,8 @@ def transition_cost(song1, song2, w_h = 0.5, w_t = 0.5):
     Think about how to weight the two. Tempo cost can easily dominate given 
     
     """
-    harm_cost = key_diff(song1["Key"], song2["Key"])
-    tempo_cost = bpm_diff(song1["BPM"], song2["BPM"]) 
+    harm_cost = key_diff(song1["key"], song2["key"])
+    tempo_cost = bpm_diff(song1["bpm"], song2["bpm"]) 
     return w_h * harm_cost + w_t * tempo_cost
 
 
