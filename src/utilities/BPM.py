@@ -11,7 +11,7 @@ class BPM_extractor():
         self.nfft = 8192
         self.novelty_window = (novelty_w, novelty_hop) # the window used in novelty calc IN SECONDS (window size, hop size)
         self.tempo_window = (tempo_w, tempo_hop)
-        self.bpm_max = 200
+        self.bpm_max = 320
         self.bpm_min = 80
 
         if novelty == "spectral": 
