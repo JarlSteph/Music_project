@@ -48,12 +48,12 @@ class BPMGUI(tb.Window):
         table_frame = ttk.Frame(self)
         table_frame.pack(padx=20, pady=10, fill="both", expand=False)
 
-        columns = ("#", "Name", "BPM", "Key")
+        columns = ("#", "name", "bpm", "key")
         self.tree = ttk.Treeview(table_frame, columns=columns, show="headings", height=6)
         self.tree.heading("#", text="#")
-        self.tree.heading("Name", text="Song Name")
-        self.tree.heading("BPM", text="BPM")
-        self.tree.heading("Key", text="Key")
+        self.tree.heading("name", text="Song Name")
+        self.tree.heading("bpm", text="BPM")
+        self.tree.heading("key", text="Key")
 
         for col in columns:
             self.tree.column(col, anchor="center", width=160 if col == "Name" else 80)
@@ -104,7 +104,7 @@ class BPMGUI(tb.Window):
 
         try:
             p_name, bpms, keys = self.loop_with_progress(path)
-            df = pd.DataFrame({"Name": p_name, "BPM": bpms, "Key": keys})
+            df = pd.DataFrame({"name": p_name, "bpm": bpms, "key": keys})
             cost_matrix = CostMatrix(df)
             cost_matrix.compute_matrix()
 
@@ -155,7 +155,7 @@ class BPMGUI(tb.Window):
 
         # Populate table
         for i, row in ordered_df.iterrows():
-            self.tree.insert("", "end", values=(i + 1, row["Name"], f"{row['BPM']:.2f}", row["Key"]))
+            self.tree.insert("", "end", values=(i + 1, row["name"], f"{row['bpm']:.2f}", row["key"]))
 
         # Clear previous plot
         for widget in self.canvas_frame.winfo_children():
@@ -224,15 +224,15 @@ class BPMGUI(tb.Window):
         # --- prep data ---
         df = df.copy()
         df["Seq"] = np.arange(1, len(df) + 1)
-        df["BPM_folded"] = df["BPM"].apply(fold_bpm)
-        df["Key_num"] = df["Key"].apply(camelot_to_num)
+        df["BPM_folded"] = df["bpm"].apply(fold_bpm)
+        df["Key_num"] = df["key"].apply(camelot_to_num)
 
         # --- plot ---
         fig, ax1 = plt.subplots(figsize=(10, 4), facecolor="#222")
         ax1.set_facecolor("#222")
 
         # BPM (folded)
-        ax1.plot(df["Seq"], df["BPM_folded"], "o-", color="tab:blue", label=f"BPM (folded {int(bpm_low)}–{int(bpm_high)})")
+        ax1.plot(df["Seq"], df["BPM_folded"], "o-", color="tab:blue", label=f"BPM")
         ax1.set_ylabel("BPM (folded)", color="white")
         ax1.set_xlabel("Song Sequence", color="white")
         ax1.set_xticks(df["Seq"])

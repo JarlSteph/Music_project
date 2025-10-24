@@ -9,8 +9,8 @@ class BPM_extractor():
                  novelty_hop: float = 0.1,
                  tempo_w: float = 20.0, 
                  tempo_hop: float = 1.0,
-                 interval_min = None,
-                 interval_max = None
+                 interval_min = 100,
+                 interval_max = 180
                  ):
         self.sr = sr
         self.nfft = 8192

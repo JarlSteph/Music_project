@@ -73,7 +73,7 @@ def plot_ordered_songs(df, cost_matrix, best_perm, best_cost, plot=True):
         i1, i2 = best_perm[i], best_perm[i + 1]
         song1, song2 = df.iloc[i1], df.iloc[i2]
         c = cost_matrix.get_cost(i1, i2)
-        ordered_songs.append({"from": song1["Name"], "to": song2["Name"], "cost": c})
+        ordered_songs.append({"from": song1["name"], "to": song2["name"], "cost": c})
 
     ordered_df = pd.DataFrame(ordered_songs)
     if plot: 
@@ -95,7 +95,7 @@ def plot_ordered_songs(df, cost_matrix, best_perm, best_cost, plot=True):
 def plot_bpm_key_variation(df):
     """
     Plot BPM and Key of each song, and their variation to the next song.
-    Expects df with columns ['Name', 'BPM', 'Key'] in playlist order.
+    Expects df with columns ['name', 'bpm', 'key'] in playlist order.
     """
 
     # numeric key encoding (A=0, A#/Bb=1, ..., G#=11) + mode (major/minor)
@@ -112,33 +112,33 @@ def plot_bpm_key_variation(df):
             return np.nan
 
     df = df.copy()
-    df["Key_num"] = df["Key"].apply(encode_key)
+    df["key_num"] = df["key"].apply(encode_key)
 
     # differences
-    df["ΔBPM"] = df["BPM"].diff().abs()
-    df["ΔKey"] = df["Key_num"].diff().abs()
+    df["Δbpm"] = df["bpm"].diff().abs()
+    df["Δkey"] = df["key_num"].diff().abs()
 
     fig, ax1 = plt.subplots(figsize=(12,6))
 
     # BPM line
-    ax1.plot(df["Name"], df["BPM"], color="tab:blue", marker="o", label="BPM")
-    ax1.set_ylabel("BPM", color="tab:blue")
+    ax1.plot(df["name"], df["bpm"], color="tab:blue", marker="o", label="bpm")
+    ax1.set_ylabel("bpm", color="tab:blue")
     ax1.tick_params(axis='y', labelcolor='tab:blue')
 
     # second axis for key
     ax2 = ax1.twinx()
-    ax2.plot(df["Name"], df["Key_num"], color="tab:orange", marker="s", label="Key")
-    ax2.set_ylabel("Key (encoded)", color="tab:orange")
+    ax2.plot(df["name"], df["key_num"], color="tab:orange", marker="s", label="key")
+    ax2.set_ylabel("key (encoded)", color="tab:orange")
     ax2.tick_params(axis='y', labelcolor='tab:orange')
 
     # annotate changes
     for i in range(1, len(df)):
-        ax1.text(i, df["BPM"].iloc[i]+1, f"Δ{df['ΔBPM'].iloc[i]:.1f}", 
+        ax1.text(i, df["bpm"].iloc[i]+1, f"Δ{df['Δbpm'].iloc[i]:.1f}", 
                  color="tab:blue", fontsize=8, ha="center")
-        ax2.text(i, df["Key_num"].iloc[i]+0.1, f"Δ{df['ΔKey'].iloc[i]:.1f}", 
+        ax2.text(i, df["key_num"].iloc[i]+0.1, f"Δ{df['Δkey'].iloc[i]:.1f}", 
                  color="tab:orange", fontsize=8, ha="center")
 
-    plt.title("BPM and Key Progression Across Playlist")
+    plt.title("bpm and key Progression Across Playlist")
     plt.xticks(rotation=90)
     plt.grid(alpha=0.3)
     fig.tight_layout()
@@ -154,7 +154,7 @@ def main(path = None):
     df = pd.DataFrame()
     print("Extracting features")
     p_name, bpms, keys=loop(path)
-    df["Name"] = p_name ; df["BPM"] = bpms ; df["Key"] = keys
+    df["name"] = p_name ; df["bpm"] = bpms ; df["key"] = keys
     print("Finding the optimal order")
     cost_matrix = CostMatrix(df)
     cost_matrix.compute_matrix()
@@ -174,7 +174,5 @@ def main(path = None):
     plot_bpm_key_variation(ordered_df)
 
 
-
 if __name__ == "__main__":
     main()
-    
