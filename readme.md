@@ -1,4 +1,4 @@
-# 🗂️ Project Overview
+# 🎶 Project Overview🎶
 
 This project analyzes and optimizes DJ playlists based on tempo (BPM) and musical key, aiming to replicate or evaluate how professional DJs (e.g., David Guetta) order their tracks.
 
@@ -26,7 +26,9 @@ Core Python modules that implement the feature extraction, cost calculation, and
 ### 💻 Main Scripts
 	•	main.py – Runs the full optimization pipeline:
 extracts BPM and key → computes transition costs → generates optimized playlist → evaluates results.
-	•	Gui_main.py – Provides a simple graphical interface for selecting tracks, running the optimization, and viewing output visually.
+
+	•	Gui_main.py
+ Provides a simple graphical interface for selecting tracks, running the optimization, and viewing output visually.
 
 ⸻
 
@@ -34,3 +36,4 @@ extracts BPM and key → computes transition costs → generates optimized playl
 
 This system combines music signal processing (for BPM/key estimation) with optimization algorithms (for sequencing tracks).
 It is designed to test whether DJs order songs in a way that minimizes tempo and key transition costs.
+
